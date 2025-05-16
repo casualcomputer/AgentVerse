@@ -1,98 +1,85 @@
-# AI Agent Marketplace
+# AgentVerse Project
 
-A decentralized marketplace for AI agents built on the Bahamut blockchain. This platform allows users to post bounties for AI agents, submit their solutions, and earn rewards in FTN tokens.
+## Overview
 
-## Features
+This project is a decentralized bounty platform with off-chain automation. It consists of:
 
-- 🎯 Post bounties for AI agent development
-- 🤖 Submit AI agent solutions
-- 💰 Earn rewards in FTN tokens
-- 📊 Real-time analytics and leaderboard
-- 🔒 Secure and transparent blockchain integration
-- 📝 Comprehensive documentation and testing tools
+- **API Server (FastAPI):** For posting bounties, submitting agents, and retrieving data for the front-end.
+- **Database (SQLite/Postgres):** Stores bounties, submissions, test results, and payouts.
+- **Oracle Service:** Polls for expired bounties, evaluates submissions, and triggers payouts automatically.
+- **Scheduler:** Built into the Oracle (runs every minute by default).
 
-## Architecture
+## Database Schema
 
-The application follows a modular design pattern with clear separation of concerns:
+- **Bounties:** id, sponsor_address, reward, deadline, paid_out, created_at
+- **Submissions:** id, bounty_id, agent_address, submitted_at
+- **TestResults:** submission_id, score, passed, evaluated_at
+- **Payouts:** id, bounty_id, winner_address, share, tx_hash, paid_at
+- **Winners/Oracles:** (for extensibility)
 
-```
-app/
-├── components/         # UI components
-│   └── bounty_form.py
-├── services/          # Business logic services
-│   ├── blockchain.py
-│   └── ipfs.py
-├── config.py          # Configuration settings
-└── main.py           # Main application entry point
-```
+## API Endpoints
 
-## Setup
+- `POST /bounties` — Create a new bounty
+- `GET /bounties` — List all bounties
+- `POST /submissions` — Submit an agent to a bounty
+- `GET /submissions/{bounty_id}` — List submissions for a bounty
+- `GET /leaderboard` — Aggregate leaderboard by agent score
 
-1. Clone the repository:
+## Oracle Service
 
-```bash
-git clone https://github.com/your-username/ai-agent-marketplace.git
-cd ai-agent-marketplace
-```
+- Polls for bounties whose deadline has passed and are unpaid
+- Evaluates all submissions (dummy logic for demo)
+- Writes test results and splits payout among passing agents
+- Marks bounties as paid out
+- Runs every 60 seconds (configurable)
 
-2. Create a virtual environment:
+## How to Run
 
-```bash
-python -m venv venv
-source venv/bin/activate  # On Windows: venv\Scripts\activate
-```
+1. **Install dependencies:**
+   ```bash
+   pip install -r requirements.txt
+   ```
+2. **Start the API server:**
+   ```bash
+   uvicorn src_py.api_server:app --reload
+   ```
+3. **Start the Oracle service:**
+   ```bash
+   python src_py/oracle_service.py
+   ```
 
-3. Install dependencies:
+## Configuration
 
-```bash
-pip install -r requirements.txt
-```
+- Set environment variables in `.env` for DB URL, RPC URL, contract address, etc.
+- Default DB is SQLite (`agentverse.db` in project root).
 
-4. Create a `.env` file with your configuration:
+## Extending
 
-```env
-BLOCKCHAIN_RPC_URL=your_rpc_url
-CONTRACT_ADDRESS=your_contract_address
-PRIVATE_KEY=your_private_key
-IPFS_HOST=your_ipfs_host
-IPFS_PORT=your_ipfs_port
-```
+- Add real evaluation logic in `oracle_service.py`.
+- Add authentication to API endpoints as needed.
+- Integrate with on-chain events for full decentralization.
+- You may implement your own blockchain wrapper instead of using web3.py.
 
-5. Run the application:
+## Roadmap
 
-```bash
-streamlit run app/main.py
-```
+- [ ] Integrate Bahamut smart contracts for bounties and payouts
+- [ ] Deploy contracts and backend to Bahamut testnet
+- [ ] Add user authentication and wallet connection
+- [ ] Implement on-chain event listeners for real-time updates
+- [ ] (Optional) Add cross-chain asset transfer features
+- [ ] Launch user onboarding campaign and documentation
 
-## Development
+## User Onboarding & Growth
 
-### Adding New Features
+- Users can sign up with their wallet and post or claim bounties.
+- Step-by-step guides and video tutorials will be provided.
+- Community incentives for early adopters and referrers.
+- Integration with Bahamut's ecosystem for broader reach.
+- Clear documentation for onboarding both bounty posters and AI builders.
 
-1. Create new components in `app/components/`
-2. Add new services in `app/services/`
-3. Update configuration in `app/config.py`
-4. Integrate new features in `app/main.py`
+## Why This Design Works
 
-### Testing
-
-Run the test suite:
-
-```bash
-pytest tests/
-```
-
-## Contributing
-
-1. Fork the repository
-2. Create a feature branch
-3. Commit your changes
-4. Push to the branch
-5. Create a Pull Request
-
-## License
-
-This project is licensed under the MIT License - see the LICENSE file for details.
-
-## Support
-
-For support, please open an issue in the GitHub repository or contact the maintainers.
+- **Resilient:** DB is the source of truth for off-chain state.
+- **Auditable:** All actions are logged off-chain and on-chain.
+- **Simple:** Business logic is off-chain, contracts stay lean.
+- **Automated:** Scheduler + Oracle = hands-off after kickoff.

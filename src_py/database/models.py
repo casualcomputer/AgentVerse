@@ -47,4 +47,24 @@ class Oracle(Base):
     id = Column(Integer, primary_key=True)
     oracle_address = Column(String(42), nullable=False, unique=True)  # Ethereum address length
     created_at = Column(DateTime, default=datetime.utcnow)
-    is_active = Column(Boolean, default=True) 
+    is_active = Column(Boolean, default=True)
+
+class TestResult(Base):
+    __tablename__ = 'test_results'
+    submission_id = Column(Integer, ForeignKey('submissions.id'), primary_key=True)
+    score = Column(Numeric(18, 8), nullable=False)
+    passed = Column(Boolean, nullable=False)
+    evaluated_at = Column(DateTime, default=datetime.utcnow)
+
+    submission = relationship("Submission")
+
+class Payout(Base):
+    __tablename__ = 'payouts'
+    id = Column(Integer, primary_key=True)
+    bounty_id = Column(Integer, ForeignKey('bounties.id'), nullable=False)
+    winner_address = Column(String(42), nullable=False)
+    share = Column(Numeric(18, 8), nullable=False)
+    tx_hash = Column(String(66), nullable=True)
+    paid_at = Column(DateTime, default=datetime.utcnow)
+
+    bounty = relationship("Bounty") 
