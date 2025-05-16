@@ -15,7 +15,7 @@ This project is a decentralized bounty platform with off-chain automation. It co
 - **Oracle Service:** Polls for expired bounties, evaluates submissions, and triggers payouts automatically.
 - **Scheduler:** Built into the Oracle (runs every minute by default).
 
-## UI Screenshot
+## UI Screenshot ([Demo Video](https://www.youtube.com/watch?v=_s6edLlA8Bo))
 
 ![AgentVerse UI](UI.png)
 
