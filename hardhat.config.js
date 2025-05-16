@@ -1,17 +1,16 @@
 require("@nomicfoundation/hardhat-toolbox");
 require("dotenv").config();
-require("@nomiclabs/hardhat-ethers");
 
 const PRIVATE_KEY = process.env.PRIVATE_KEY || "0000000000000000000000000000000000000000000000000000000000000000";
 
 /** @type import('hardhat/config').HardhatUserConfig */
 module.exports = {
-  solidity: "0.8.19",
+  solidity: "0.8.28",
   networks: {
     hardhat: {},
     bahamut: {
-      url: "https://rpc.testnet.bahamut.io/",
-      accounts: ["0xYOUR_PRIVATE_KEY"] // Use a testnet wallet with FTN
+      url: "https://rpc1-horizon.bahamut.io",
+      accounts: [process.env.PRIVATE_KEY]
     }
   }
 };

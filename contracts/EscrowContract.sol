@@ -1,4 +1,4 @@
-contract EscrowWithDeadline {
+contract EscrowContract {
     struct Bounty {
         address sponsor;
         uint256 reward;
@@ -61,3 +61,5 @@ contract EscrowWithDeadline {
         emit BatchPaid(id, winners, share);
     }
 }
+//PS D:\AgentVerse> npx hardhat run scripts/deploy.js --network bahamut
+//EscrowContract deployed to: 0xeA141c8B753Cc244745603412Ae731CB078Bac9d

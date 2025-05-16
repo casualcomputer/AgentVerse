@@ -30,8 +30,7 @@ async function main() {
   
   for (const model of allowedModels) {
     const modelHash = calculateModelHash(model);
-    await escrow.addAllowedModel(modelHash);
-    console.log(`Added allowed model hash for ${model}: ${modelHash}`);
+    console.log(`Model hash for ${model}: ${modelHash}`);
   }
 
   console.log("Deployment completed!");
