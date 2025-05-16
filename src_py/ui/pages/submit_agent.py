@@ -2,7 +2,6 @@
 Submit Agent page for the AgentVerse platform.
 """
 import streamlit as st
-import hashlib
 from datetime import datetime
 
 from src_py.services.blockchain import BlockchainService
@@ -52,13 +51,12 @@ def render_page():
     
     # Submission Form
     with st.form("submit_agent_form"):
-        # Get available bounties
-        bounties = blockchain_service.get_events('BountyPosted')
-        bounty_options = [(b['args']['bountyId'], f"{b['args']['description']} - {b['args']['amount']}") 
-                         for b in bounties]
-        
-        if not bounty_options:
-            bounty_options = [(1, "Document Classifier Agent - 100 FTN")]  # Default demo value
+        # For demo purposes, create a fixed bounty option
+        bounty_options = [
+            (1, "Document Classifier Agent - 1 FTN"),
+            (2, "Text Summarization Agent - 1 FTN"),
+            (3, "Sentiment Analysis Agent - 1 FTN")
+        ]
         
         # Select bounty
         bounty_id = st.selectbox(
@@ -142,22 +140,36 @@ def render_page():
                 st.error("Please provide your agent code")
                 return
                 
+            # Create a progress bar for the transaction
+            progress_bar = st.progress(0)
+            status_text = st.empty()
+            
             try:
+                # Update status
+                status_text.info("Preparing to submit agent to Bahamut blockchain...")
+                progress_bar.progress(20)
+                
                 # Upload agent code to IPFS
                 agent_cid = ipfs_service.upload_file(agent_code.encode(), "agent.py")
+                status_text.info(f"Agent code uploaded to IPFS. CID: {format_cid(agent_cid)}")
+                progress_bar.progress(40)
                 
                 # Calculate code hash
                 code_hash = calculate_hash(agent_code)
+                status_text.info("Code hash calculated for verification")
+                progress_bar.progress(60)
                 
                 # Submit to blockchain
-                tx = blockchain_service.submit_agent(
-                    bounty_id[0],
-                    agent_cid,
-                    code_hash
-                )
+                status_text.info("Sending transaction to Bahamut blockchain...")
+                progress_bar.progress(80)
+                tx = blockchain_service.submit_agent(bounty_id[0])
+                
+                # Final update
+                progress_bar.progress(100)
+                status_text.success("Transaction confirmed!")
                 
                 st.success("""
-                🎉 Submission received! Here's what happens next:
+                🎉 Agent submitted successfully! Here's what happens next:
                 
                 1. **Validation Phase**
                    - Code syntax check
@@ -170,23 +182,28 @@ def render_page():
                    - Resource usage check
                 
                 3. **Results**
-                   - You'll receive an email with results
-                   - Check the leaderboard for your score
+                   - Results will be available on the leaderboard
                    - If successful, reward will be sent to your wallet
                 """)
                 
                 # Show submission details
                 st.info(f"""
-                **Submission Details:**
-                - Bounty: {bounty_id[1]}
-                - Agent Name: {agent_name}
-                - Code Length: {len(agent_code)} characters
-                - IPFS CID: {format_cid(agent_cid)}
-                - Transaction Hash: {tx['tx_hash']}
+                ### Transaction Details:
+                - **Bounty**: {bounty_id[1]}
+                - **Agent Name**: {agent_name}
+                - **Code Length**: {len(agent_code)} characters
+                - **IPFS CID**: {format_cid(agent_cid)}
+                - **Transaction Hash**: [{tx['tx_hash']}](https://horizon.ftnscan.com/tx/{tx['tx_hash']})
+                - **Contract**: [{blockchain_service.contract_address}](https://horizon.ftnscan.com/address/{blockchain_service.contract_address})
+                
+                You can view this transaction on [Bahamut Explorer](https://horizon.ftnscan.com/tx/{tx['tx_hash']})
                 """)
                 
             except Exception as e:
+                progress_bar.progress(100)
+                status_text.error("Transaction failed!")
                 st.error(f"Error submitting agent: {str(e)}")
+                st.error("Please check the console for more details and try again.")
     
     # Help section
     with st.expander("ℹ️ Submission Guidelines"):

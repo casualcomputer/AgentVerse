@@ -62,11 +62,9 @@ This project is a decentralized bounty platform with off-chain automation. It co
 
 ## Roadmap
 
-- [ ] Integrate Bahamut smart contracts for bounties and payouts
-- [ ] Deploy contracts and backend to Bahamut testnet
 - [ ] Add user authentication and wallet connection
 - [ ] Implement on-chain event listeners for real-time updates
-- [ ] (Optional) Add cross-chain asset transfer features
+- [ ] (Optional) Add cross-chain asset transfer features - get paid in any cryto asset
 - [ ] Launch user onboarding campaign and documentation
 
 ## User Onboarding & Growth
