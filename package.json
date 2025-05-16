@@ -1,0 +1,20 @@
+{
+  "name": "agentverse",
+  "version": "1.0.0",
+  "description": "AI agent marketplace with on-chain rewards",
+  "main": "index.js",
+  "scripts": {
+    "test": "npx hardhat test",
+    "deploy": "npx hardhat run scripts/deploy.js --network bahamut_testnet",
+    "oracle": "node scripts/oracle.js"
+  },
+  "dependencies": {
+    "@openzeppelin/contracts": "^5.0.1",
+    "dotenv": "^16.3.1",
+    "ethers": "^6.8.1"
+  },
+  "devDependencies": {
+    "@nomicfoundation/hardhat-toolbox": "^4.0.0",
+    "hardhat": "^2.19.1"
+  }
+}
