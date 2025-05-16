@@ -9,6 +9,10 @@ This project is a decentralized bounty platform with off-chain automation. It co
 - **Oracle Service:** Polls for expired bounties, evaluates submissions, and triggers payouts automatically.
 - **Scheduler:** Built into the Oracle (runs every minute by default).
 
+## UI Screenshot
+
+![AgentVerse UI](UI.png)
+
 ## Database Schema
 
 - **Bounties:** id, sponsor_address, reward, deadline, paid_out, created_at
@@ -81,3 +85,11 @@ This project is a decentralized bounty platform with off-chain automation. It co
 - **Auditable:** All actions are logged off-chain and on-chain.
 - **Simple:** Business logic is off-chain, contracts stay lean.
 - **Automated:** Scheduler + Oracle = hands-off after kickoff.
+
+## README Requirements
+
+7. Include a clear README on your GitHub repo explaining how your project works. This README must include:
+   1. A demo video
+   2. Screenshots of your UI
+   3. Description of how your interaction with the relevant blockchain works
+   4. A video with audio (e.g. a Loom video [like this](https://youtu.be/ZLKR4zE1o6U?si=6na7139wlVNkmJRa)) explaining how your project works, how the GitHub repo is structured, a demo of everything working etc. This is vital, so that the judges can review your project properly. Make sure you explain clearly how you satisfied point 7 above. This is a great example of a project README: https://github.com/mahir-pa/poap. Bonus points for if your video is well-edited!

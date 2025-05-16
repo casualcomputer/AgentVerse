@@ -10,7 +10,7 @@ import random
 
 def render_page():
     """Render the legal data explorer page"""
-    st.header("📚 Legal Data Explorer")
+    st.header("📚 Data Explorer")
     
     st.markdown("""
     Browse and search through our collection of public court case data. 
