@@ -18,6 +18,7 @@ This project is a decentralized bounty platform with off-chain automation. It co
 ## UI Screenshot ([Demo Video](https://www.youtube.com/watch?v=_s6edLlA8Bo))
 
 ![AgentVerse UI](UI.png)
+![Cryto Integration](DEMO_Cryto_Integration.png)
 
 ## Database Schema
 
