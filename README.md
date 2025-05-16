@@ -1,104 +1,98 @@
-# AgentVerse
+# AI Agent Marketplace
 
-AgentVerse is a decentralized platform where organizations post bounties for AI agents, and developers compete to build and submit solutions. Think of it as Fiverr meets Kaggle, but for verifiable, domain-specific AI agents—built openly and rewarded in crypto.
+A decentralized marketplace for AI agents built on the Bahamut blockchain. This platform allows users to post bounties for AI agents, submit their solutions, and earn rewards in FTN tokens.
 
-## Problem
+## Features
 
-Companies need custom AI agents for specific domains but struggle to:
+- 🎯 Post bounties for AI agent development
+- 🤖 Submit AI agent solutions
+- 💰 Earn rewards in FTN tokens
+- 📊 Real-time analytics and leaderboard
+- 🔒 Secure and transparent blockchain integration
+- 📝 Comprehensive documentation and testing tools
 
-1. Find qualified AI engineers
-2. Verify agent quality objectively
-3. Streamline payments across borders
+## Architecture
 
-Meanwhile, AI engineers want to:
-
-1. Get paid for their skills
-2. Work on diverse real-world challenges
-3. Access fair compensation regardless of location
-
-## Solution
-
-AgentVerse connects businesses with AI engineers through:
-
-1. **On-chain bounties** - Companies post requirements with cryptocurrency rewards
-2. **Automated verification** - Test suites objectively evaluate agent quality
-3. **Trustless rewards** - Smart contracts automatically release payment for successful submissions
-
-## Quick Setup
-
-### Prerequisites
-
-- Node.js 16+
-- Python 3.9+
-- A wallet with Bahamut testnet FTN tokens
-
-### Installation
-
-1. Clone this repository
+The application follows a modular design pattern with clear separation of concerns:
 
 ```
-git clone https://github.com/yourusername/AgentVerse.git
-cd AgentVerse
+app/
+├── components/         # UI components
+│   └── bounty_form.py
+├── services/          # Business logic services
+│   ├── blockchain.py
+│   └── ipfs.py
+├── config.py          # Configuration settings
+└── main.py           # Main application entry point
 ```
 
-2. Install JavaScript dependencies
+## Setup
 
-```
-npm install
+1. Clone the repository:
+
+```bash
+git clone https://github.com/your-username/ai-agent-marketplace.git
+cd ai-agent-marketplace
 ```
 
-3. Install Python dependencies
+2. Create a virtual environment:
 
+```bash
+python -m venv venv
+source venv/bin/activate  # On Windows: venv\Scripts\activate
 ```
+
+3. Install dependencies:
+
+```bash
 pip install -r requirements.txt
 ```
 
-4. Create a `.env` file based on `.env.example`
+4. Create a `.env` file with your configuration:
 
-```
-cp .env.example .env
-# Edit .env with your private key and other settings
-```
-
-### Deployment
-
-1. Deploy the smart contract to Bahamut testnet
-
-```
-npx hardhat run scripts/deploy.js --network bahamut_testnet
+```env
+BLOCKCHAIN_RPC_URL=your_rpc_url
+CONTRACT_ADDRESS=your_contract_address
+PRIVATE_KEY=your_private_key
+IPFS_HOST=your_ipfs_host
+IPFS_PORT=your_ipfs_port
 ```
 
-2. Update the `.env` file with the deployed contract address
+5. Run the application:
 
-### Running the Application
-
-1. Start the oracle service
-
-```
-node scripts/oracle.js
+```bash
+streamlit run app/main.py
 ```
 
-2. Run the Streamlit interface
+## Development
 
+### Adding New Features
+
+1. Create new components in `app/components/`
+2. Add new services in `app/services/`
+3. Update configuration in `app/config.py`
+4. Integrate new features in `app/main.py`
+
+### Testing
+
+Run the test suite:
+
+```bash
+pytest tests/
 ```
-streamlit run streamlit_app.py
-```
 
-## Project Structure
+## Contributing
 
-- `/contracts` - Smart contracts for bounty escrow and reward distribution
-- `/scripts` - Deployment and oracle scripts
-- `/agent.py` - Example CrewAI agent (Tax FAQ bot)
-- `/tests` - Agent verification tests
-- `streamlit_app.py` - User interface for posting bounties and viewing leaderboard
-
-## How It Works
-
-1. **Post Bounty** - Companies post a bounty with a description and FTN token reward
-2. **Submit Agent** - Developers build and submit AI agents using CrewAI
-3. **Automated Testing** - Oracle runs test suite against the submitted agent
-4. **Reward Distribution** - Smart contract automatically releases payment to winning solutions
+1. Fork the repository
+2. Create a feature branch
+3. Commit your changes
+4. Push to the branch
+5. Create a Pull Request
 
 ## License
 
-MIT
+This project is licensed under the MIT License - see the LICENSE file for details.
+
+## Support
+
+For support, please open an issue in the GitHub repository or contact the maintainers.
