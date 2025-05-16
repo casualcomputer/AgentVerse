@@ -1,7 +1,7 @@
-import time
 from datetime import datetime
 from src_py.database.database import get_db, init_db
 from src_py.database.models import Bounty, Submission, TestResult, Payout
+import time 
 
 def evaluate_submission(submission):
     # Dummy scoring: random or fixed for demo
@@ -10,7 +10,7 @@ def evaluate_submission(submission):
     passed = True
     return score, passed
 
-def process_expired_bounties():
+def process_expired_bounties(request=None):
     now = int(datetime.utcnow().timestamp())
     with get_db() as db:
         expired_bounties = db.query(Bounty).filter(Bounty.deadline <= now, Bounty.paid_out == False).all()
@@ -45,6 +45,7 @@ def process_expired_bounties():
             bounty.paid_out = True
             print(f"Bounty {bounty.id} processed. Winners: {winners}")
         db.commit()
+    return "Processed expired bounties", 200
 
 def run_oracle():
     print("Oracle service started. Polling for expired bounties...")
